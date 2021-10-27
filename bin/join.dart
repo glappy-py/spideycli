@@ -1,7 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+// Use this when compiling production build
+// File meetingsFile = File(
+//     Platform.script.toString().split("file:///")[1].split("join.exe")[0] +
+//         '/meetings.json');
+
+// Use this for development test
 File meetingsFile = File('meetings.json');
+
 List? fileContent;
 void main(List<String> args) async {
   fileContent = json.decode(await meetingsFile.readAsString());

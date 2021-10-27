@@ -4,3 +4,4 @@
 bin/meetings.json
 # Conventional directory for build output.
 build/
+join/
