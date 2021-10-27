@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-File tasksFile = File('tasks.txt');
+File tasksFile = File('tasks.json');
 List? fileContent;
 void main(List<String> args) async {
   fileContent = json.decode(await tasksFile.readAsString());
   try {
-    if (args[0] == "new") {
-      addTodo(args, fileContent!);
-    } else if (args[0] == "list") {
+    if (args[0] == "list") {
       listTodo(fileContent!);
     } else if (args[0] == "done") {
       removeTodo(args, fileContent!);
+    } else {
+      addTodo(args, fileContent!);
     }
   } catch (e) {
     print("");
@@ -24,10 +24,10 @@ void syncData() {
 }
 
 void addTodo(List<String> args, List fileContent) async {
-  fileContent.add(args[1]);
+  fileContent.add(args[0]);
   syncData();
   print("");
-  print("added new task: " + args[1]);
+  print("added new task: " + args[0]);
 }
 
 void listTodo(List fileContent) async {

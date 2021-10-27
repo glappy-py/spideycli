@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-File meetingsFile = File('meetings.txt');
+File meetingsFile = File('meetings.json');
 List? fileContent;
 void main(List<String> args) async {
   fileContent = json.decode(await meetingsFile.readAsString());
