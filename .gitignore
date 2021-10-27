@@ -1,6 +1,6 @@
 # Files and directories created by pub.
 .dart_tool/
 .packages
-
+bin/meetings.txt
 # Conventional directory for build output.
 build/

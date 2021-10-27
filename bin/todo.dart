@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 File tasksFile = File('tasks.txt');
+List? fileContent;
 void main(List<String> args) async {
-  List fileContent = json.decode(await tasksFile.readAsString());
+  fileContent = json.decode(await tasksFile.readAsString());
   try {
     if (args[0] == "new") {
-      addTodo(args, fileContent);
+      addTodo(args, fileContent!);
     } else if (args[0] == "list") {
-      listTodo(fileContent);
+      listTodo(fileContent!);
     } else if (args[0] == "done") {
-      removeTodo(args, fileContent);
+      removeTodo(args, fileContent!);
     }
   } catch (e) {
     print("");
@@ -18,9 +19,13 @@ void main(List<String> args) async {
   }
 }
 
+void syncData() {
+  tasksFile.writeAsString(json.encode(fileContent));
+}
+
 void addTodo(List<String> args, List fileContent) async {
   fileContent.add(args[1]);
-  tasksFile.writeAsString(json.encode(fileContent));
+  syncData();
   print("");
   print("added new task: " + args[1]);
 }
@@ -48,7 +53,7 @@ void removeTodo(List<String> args, List fileContent) async {
       int index = int.parse(parsedArgs[0]) - 1;
       print("removed: " + fileContent[index]);
       fileContent.removeAt(index);
-      tasksFile.writeAsString(json.encode(fileContent));
+      syncData();
     } catch (e) {
       print("specify the task no. not the task");
     }
