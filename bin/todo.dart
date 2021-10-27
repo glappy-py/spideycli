@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 // Use this when compiling production build
-// File meetingsFile = File(
-//     Platform.script.toString().split("file:///")[1].split("todo.exe")[0] +
-//         '/tasks.json');
+File tasksFile = File(
+    Platform.script.toString().split("file:///")[1].split("todo.exe")[0] +
+        '/tasks.json');
 
 // use this for development test
-File tasksFile = File('tasks.json');
+// File tasksFile = File('tasks.json');
 
 List? fileContent;
 void main(List<String> args) async {
