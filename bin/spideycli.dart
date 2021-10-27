@@ -1,3 +1,5 @@
+import 'dart:io';
+
 void main(List<String> args) {
   try {
     if (args[0] == "help") {
@@ -10,5 +12,5 @@ void main(List<String> args) {
 }
 
 void help() {
-  print("ok nice hai sir");
+  print("help panel will fill in info later");
 }
