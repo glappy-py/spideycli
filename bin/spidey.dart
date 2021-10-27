@@ -1,5 +1,3 @@
-import 'dart:io';
-
 void main(List<String> args) {
   try {
     if (args[0] == "help") {

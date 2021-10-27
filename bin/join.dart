@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 // Use this when compiling production build
-// File meetingsFile = File(
-//     Platform.script.toString().split("file:///")[1].split("join.exe")[0] +
-//         '/meetings.json');
+File meetingsFile =
+    File(Platform.resolvedExecutable.split("join.exe")[0] + '/meetings.json');
 
 // Use this for development test
-File meetingsFile = File('meetings.json');
+// File meetingsFile = File('meetings.json');
 
 List? fileContent;
 void main(List<String> args) async {
@@ -17,6 +16,8 @@ void main(List<String> args) async {
       newMeetingEntry(fileContent!);
     } else if (args[0] == "remove") {
       removeMeetingEntry(args, fileContent!);
+    } else if (args[0] == "list") {
+      listMeetings(fileContent!);
     } else {
       join(args, fileContent!);
     }
@@ -59,28 +60,17 @@ void newMeetingEntry(List fileContent) {
 
 void removeMeetingEntry(List<String> args, List fileContent) {
   bool removed = false;
-  try {
-    for (var item in fileContent) {
-      if (item['name'] == args[1]) {
-        fileContent.removeAt(fileContent.indexOf(item));
-        removed = true;
-        print("");
-        print('meeting entry was successfully removed');
-      }
-    }
-  } catch (e) {
-    print("");
-    print("specify the name of the meeting entry you want to remove");
-    print("meeting name: ");
-    String meetingName = stdin.readLineSync() ?? "";
-    for (var item in fileContent) {
-      if (item['name'] == meetingName) {
-        fileContent.removeAt(fileContent.indexOf(item));
-        removed = true;
-        print("");
-        print(
-            'meeting entry with name "$meetingName" was successfully removed');
-      }
+  listMeetings(fileContent);
+  print("");
+  print("specify the name of the meeting entry you want to remove");
+  print("meeting name: ");
+  String meetingName = stdin.readLineSync() ?? "";
+  for (var item in fileContent) {
+    if (item['name'] == meetingName) {
+      fileContent.removeAt(fileContent.indexOf(item));
+      removed = true;
+      print("");
+      print('meeting entry with name "$meetingName" was successfully removed');
     }
   }
   if (!removed) {
@@ -116,4 +106,13 @@ void joinMeeting(String meetingId, String meetingName) {
   print("joining " + meetingName);
   Process.run('start', ["https://meet.google.com/" + meetingId],
       runInShell: true);
+}
+
+void listMeetings(List fileContent) async {
+  print("");
+  int counter = 1;
+  for (var item in fileContent) {
+    print(counter.toString() + ". " + item['name'] + ": " + item['id']);
+    counter++;
+  }
 }

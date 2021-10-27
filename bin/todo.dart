@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 // Use this when compiling production build
-File tasksFile = File(
-    Platform.script.toString().split("file:///")[1].split("todo.exe")[0] +
-        '/tasks.json');
+File tasksFile =
+    File(Platform.resolvedExecutable.split("todo.exe")[0] + '/tasks.json');
 
 // use this for development test
 // File tasksFile = File('tasks.json');
