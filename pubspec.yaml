@@ -12,3 +12,7 @@ environment:
 
 dev_dependencies:
   lints: ^1.0.0
+dependencies: 
+  archive: ^3.1.6
+  filepicker_windows: ^2.0.0
+  http: ^0.13.4

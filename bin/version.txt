@@ -1,0 +1,3 @@
+1.0.0
+
+[NOTE : Do not change anything in this file or SpideyCLI may behave abnormally]
