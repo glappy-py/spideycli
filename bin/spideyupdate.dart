@@ -8,10 +8,15 @@ void main(List<String> args) async {
       .get(Uri.https("raw.githubusercontent.com",
           "/glappy-py/SpideyCLI-BUILD-/main/version.txt"))
       .then((response) async {
-    String latestVersion = response.body;
+    String latestVersion = response.body.split("\n")[0];
     // Use this for development test
-    String currentVersion =
-        File("version.txt").readAsStringSync().split("\n")[0];
+    // String currentVersion = File("version.txt").readAsLinesSync()[0];
+
+    // Use this for production build
+    String currentVersion = File(
+            Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
+                '/version.txt')
+        .readAsLinesSync()[0];
     if (latestVersion != currentVersion) {
       print("update available : " + latestVersion);
       update();
@@ -36,8 +41,13 @@ void update() {
   print(
       "WARNING : do not close the terminal until updates are finished, or you may have to reinstall spideyCLI");
   print("");
+  print(updateorigin);
+  print("");
   print("downloading updates...");
-  http.get(Uri.https("www.github.com", updateorigin)).then((response) async {
+  http
+      .get(Uri.https("www.github.com",
+          "/glappy-py/SpideyCLI-BUILD-/releases/download/update/package.zip"))
+      .then((response) async {
     print("installing updates...");
     await File(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
             '\\package.zip')

@@ -6,18 +6,15 @@ void main(List<String> args) {
       .get(Uri.https("raw.githubusercontent.com",
           "/glappy-py/SpideyCLI-BUILD-/main/version.txt"))
       .then((response) async {
-    String latestVersion = response.body;
+    String latestVersion = response.body.split("\n")[0];
     // Use this for development test
-    String currentVersion =
-        File("version.txt").readAsStringSync().split("\n")[0];
+    // String currentVersion = File("version.txt").readAsLinesSync()[0];
 
     // Use this for production build
-    // String currentVersion =
-    //     File(Platform.resolvedExecutable.split("join.exe")[0] + '/version.txt')
-    //         .readAsStringSync()
-    //         .split("\n")[0];
-
-    if (latestVersion != currentVersion) {
+    String currentVersion = File(
+            Platform.resolvedExecutable.split("spidey.exe")[0] + '/version.txt')
+        .readAsLinesSync()[0];
+    if (latestVersion[0] != currentVersion[0]) {
       print(
           'SpideyCLI update available : v$latestVersion . You are currently using $currentVersion . run \'spideyupdate\' to update SpideyCLI to the latest version');
     }

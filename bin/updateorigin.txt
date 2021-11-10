@@ -1,3 +1,0 @@
-/glappy-py/SpideyCLI-BUILD-/releases/download/update/package.zip
-
-[NOTE : Do not change anything in this file or SpideyCLI may behave abnormally]
