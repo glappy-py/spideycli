@@ -20,29 +20,25 @@ void main(List<String> args) async {
     if (latestVersion != currentVersion) {
       print("update available : " + latestVersion);
       update();
+      await File(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
+              '/version.txt')
+          .writeAsString(latestVersion);
     } else {
       print(
           "you are current using the latest version of SpideyCLI. Do you want to force update (y/n) : ");
       if (stdin.readLineSync()?[0] == "y") {
         update();
+        await File(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
+                '/version.txt')
+            .writeAsString(latestVersion);
       }
     }
   });
 }
 
 void update() {
-  // String updateorigin =
-  //     await File("updateorigin.txt").readAsStringSync().split("\n")[0];
-  String updateorigin = File(
-          Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-              '/updateorigin.txt')
-      .readAsStringSync()
-      .split("\n")[0];
   print(
       "WARNING : do not close the terminal until updates are finished, or you may have to reinstall spideyCLI");
-  print("");
-  print(updateorigin);
-  print("");
   print("downloading updates...");
   http
       .get(Uri.https("www.github.com",
@@ -98,6 +94,5 @@ void update() {
       removeLog.deleteSync();
     }
     print("update was successfull");
-    sleep(Duration(seconds: 3));
   });
 }

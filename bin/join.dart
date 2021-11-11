@@ -128,6 +128,7 @@ void removeMeetingEntry(List<String> args, List fileContent) {
   for (var item in fileContent) {
     if (item['name'] == meetingName) {
       fileContent.removeAt(fileContent.indexOf(item));
+      syncData();
       removed = true;
       print("");
       print('meeting entry with name "$meetingName" was successfully removed');

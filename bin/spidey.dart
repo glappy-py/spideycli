@@ -1,3 +1,4 @@
+import 'package:archive/archive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 
@@ -14,7 +15,7 @@ void main(List<String> args) {
     String currentVersion = File(
             Platform.resolvedExecutable.split("spidey.exe")[0] + '/version.txt')
         .readAsLinesSync()[0];
-    if (latestVersion[0] != currentVersion[0]) {
+    if (latestVersion != currentVersion) {
       print(
           'SpideyCLI update available : v$latestVersion . You are currently using $currentVersion . run \'spideyupdate\' to update SpideyCLI to the latest version');
     }
@@ -22,8 +23,16 @@ void main(List<String> args) {
   try {
     if (args[0] == "help") {
       help();
-    } else if (args[0] == "v") {
-      print(File("version.txt").readAsStringSync().split("\n")[0]);
+    } else if (args[0] == "-v") {
+      // For development test
+      // print(File("version.txt").readAsStringSync().split("\n")[0]);
+      // For production build
+      print(File(Platform.resolvedExecutable.split("spidey.exe")[0] +
+              '/version.txt')
+          .readAsLinesSync()[0]);
+    } else {
+      print("");
+      print("use spidey help to get a list of valid commands");
     }
   } catch (e) {
     print("");
@@ -39,7 +48,7 @@ void help() {
 
   spideyupdate  -  update SpideyCLI. NOTE : there's no space between spidey and update (it's 'spideyupdate')
 
-  spidey v  -  show the version of SpideyCLI you are currently using
+  spidey -v  -  show the version of SpideyCLI you are currently using
 
   join new  -  create a new meeting entry (gmeet/zoom)
   

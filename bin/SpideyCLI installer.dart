@@ -8,8 +8,11 @@ void main() {
   final result = directory.getDirectory();
   if (result != null) {
     print("Installing SpideyCLI on your system");
-    Process.run("setx",
-        ["/M", "path", Platform.environment['PATH']! + result.path + ";"]);
+    Process.run("setx", [
+      "/M",
+      "path",
+      Platform.environment['PATH']! + ";" + result.path + "/SpideyCLI" + ";"
+    ]);
     install(result.path);
   }
 }
@@ -35,17 +38,17 @@ void install(String path) {
 
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
-
+    Directory(path + "/SpideyCLI").create();
     // Extract the contents of the Zip archive to disk.
     for (final file in archive) {
       final filename = file.name;
       if (file.isFile) {
         final data = file.content as List<int>;
-        File(path + '/' + filename)
+        File(path + '/SpideyCLI/' + filename)
           ..createSync(recursive: true)
           ..writeAsBytesSync(data);
       } else {
-        Directory(path + '/' + filename).create(recursive: true);
+        Directory(path + '/SpideyCLI/' + filename).create(recursive: true);
       }
     }
     File(Platform.resolvedExecutable.split("spideycli installer.exe")[0] +
