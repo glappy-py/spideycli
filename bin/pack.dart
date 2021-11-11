@@ -21,6 +21,7 @@ void main(List<String> args) {
       for (var ignore in ignoredFiles) {
         if (item.path.split("A:\\spideycli\\build\\")[1] == ignore) {
           isValid = false;
+          break;
         }
       }
       if (isValid) {

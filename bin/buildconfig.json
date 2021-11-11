@@ -1,0 +1,11 @@
+[
+  "build.exe",
+  "build.dart",
+  "pack.exe",
+  "pack.dart",
+  "test.exe",
+  "test.dart",
+  "buildconfig.json",
+  "packconfig.json",
+  "removelog.json"
+]
