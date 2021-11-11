@@ -20,7 +20,7 @@ void main(List<String> args) async {
               "compile",
               "exe",
               "--output",
-              "A:\\spideycli\\test\\" + fileName.split(".dart")[0] + ".exe",
+              "A:\\spideycli\\build\\" + fileName.split(".dart")[0] + ".exe",
               fileName
             ],
             runInShell: true);
@@ -35,7 +35,7 @@ void main(List<String> args) async {
         }
       }
       if (isValid) {
-        File(item.path).copy("A:\\spideycli\\test\\" + fileName);
+        File(item.path).copy("A:\\spideycli\\build\\" + fileName);
         print(fileName);
       }
     }
