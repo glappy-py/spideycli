@@ -1,0 +1,31 @@
+{
+  "update": [
+    "meetings.json",
+    "README BEFORE INSTALLING.txt",
+    "spideycli installer.exe",
+    "spideyupdate.exe",
+    "SpideyCLI.zip",
+    "package.zip",
+    "tasks.json",
+    "version.txt"
+  ],
+  "installer": [
+    "README BEFORE INSTALLING.txt",
+    "spideycli installer.exe",
+    "SpideyCLI.zip",
+    "package.zip"
+  ],
+  "release": [
+    "package.zip",
+    "join.exe",
+    "ls.exe",
+    "meetings.json",
+    "spidey.exe",
+    "SpideyCLI.zip",
+    "spideyupdate.exe",
+    "tasks.json",
+    "todo.exe",
+    "touch.exe",
+    "version.txt"
+  ]
+}
