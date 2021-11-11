@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 void main(List<String> args) async {
+  print("");
+  print("building...");
+  print("");
   List ignoredFiles = json.decode(File("buildconfig.json").readAsStringSync());
   for (FileSystemEntity item in Directory("A:\\spideycli\\bin").listSync()) {
     String fileName = item.path.split("A:\\spideycli\\bin\\")[1];

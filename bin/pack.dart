@@ -12,8 +12,14 @@ void main(List<String> args) {
         json.decode(File("packconfig.json").readAsStringSync())[args[0]];
     if (args[0] == "release") {
       encoder.create("A:\\spideycli\\build\\SpideyCLI.zip");
+      print("");
+      print("packing into SpideyCLI.zip for " + args[0]);
+      print("");
     } else {
       encoder.create("A:\\spideycli\\build\\package.zip");
+      print("");
+      print("packing into package.zip for " + args[0]);
+      print("");
     }
     for (FileSystemEntity item
         in Directory("A:\\spideycli\\build").listSync()) {
