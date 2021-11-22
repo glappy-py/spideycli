@@ -3,11 +3,11 @@
     "meetings.json",
     "README BEFORE INSTALLING.txt",
     "spideycli installer.exe",
-    "spideyupdate.exe",
     "SpideyCLI.zip",
     "package.zip",
     "tasks.json",
-    "version.txt"
+    "version.txt",
+    "installerconfig.json"
   ],
   "installer": [
     "README BEFORE INSTALLING.txt",
@@ -26,6 +26,9 @@
     "tasks.json",
     "todo.exe",
     "touch.exe",
-    "version.txt"
+    "version.txt",
+    "installerconfig.json",
+    "updater.exe",
+    "updater2.exe"
   ]
 }

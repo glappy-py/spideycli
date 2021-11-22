@@ -2,6 +2,7 @@ import 'package:filepicker_windows/filepicker_windows.dart';
 import 'package:http/http.dart' as http;
 import 'package:archive/archive.dart';
 import 'dart:io';
+import 'dart:convert';
 
 void main() {
   final directory = DirectoryPicker();
@@ -38,15 +39,42 @@ void install(String path) {
 
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
-    Directory(path + "/SpideyCLI").create();
+    if (!path.contains("/SpideyCLI")) {
+      if (!Directory(path + "/SpideyCLI").existsSync()) {
+        Directory(path + "/SpideyCLI").create();
+      }
+    }
     // Extract the contents of the Zip archive to disk.
     for (final file in archive) {
       final filename = file.name;
       if (file.isFile) {
-        final data = file.content as List<int>;
-        File(path + '/SpideyCLI/' + filename)
-          ..createSync(recursive: true)
-          ..writeAsBytesSync(data);
+        if (filename == "installerconfig.json") {
+          final data = file.content as List<int>;
+          File(path + '/SpideyCLI/' + filename)
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(data);
+        }
+      }
+    }
+    List skipFiles = json.decode(
+        File(path + '/SpideyCLI/' + "installerconfig.json")
+            .readAsStringSync())['skipFiles'];
+    for (final file in archive) {
+      final filename = file.name;
+      if (file.isFile) {
+        if (File(path + '/SpideyCLI/' + filename).existsSync()) {
+          if (!skipFiles.contains(filename)) {
+            final data = file.content as List<int>;
+            File(path + '/SpideyCLI/' + filename)
+              ..createSync(recursive: true)
+              ..writeAsBytesSync(data);
+          }
+        } else {
+          final data = file.content as List<int>;
+          File(path + '/SpideyCLI/' + filename)
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(data);
+        }
       } else {
         Directory(path + '/SpideyCLI/' + filename).create(recursive: true);
       }
@@ -54,6 +82,7 @@ void install(String path) {
     File(Platform.resolvedExecutable.split("spideycli installer.exe")[0] +
             '/package.zip')
         .deleteSync();
+    File(path + '/SpideyCLI/' + "installerconfig.json").deleteSync();
     print("installation was successfull");
     sleep(Duration(seconds: 3));
   });

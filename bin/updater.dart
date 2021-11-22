@@ -14,29 +14,23 @@ void main(List<String> args) async {
 
     // Use this for production build
     String currentVersion = File(
-            Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
+            Platform.resolvedExecutable.split("updater.exe")[0] +
                 '/version.txt')
         .readAsLinesSync()[0];
     if (latestVersion != currentVersion) {
       print("update available : " + latestVersion);
-      update();
-      await File(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-              '/version.txt')
-          .writeAsString(latestVersion);
+      update(latestVersion);
     } else {
       print(
           "you are current using the latest version of SpideyCLI. Do you want to force update (y/n) : ");
       if (stdin.readLineSync()?[0] == "y") {
-        update();
-        await File(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-                '/version.txt')
-            .writeAsString(latestVersion);
+        update(latestVersion);
       }
     }
   });
 }
 
-void update() {
+void update(String latestVersion) async {
   print(
       "WARNING : do not close the terminal until updates are finished, or you may have to reinstall spideyCLI");
   print("""
@@ -72,53 +66,64 @@ MMMMMMMMMMMMMMMMMMMMWWWMMMMWWMMMMMMMMMMMMMMMMMMMMM""");
           "/glappy-py/SpideyCLI-BUILD-/releases/download/update/package.zip"))
       .then((response) async {
     print("installing updates...");
-    await File(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
+    await File(Platform.resolvedExecutable.split("updater.exe")[0] +
             '\\package.zip')
         .writeAsBytes(response.bodyBytes);
     // Read the Zip file from disk.
-    final bytes = File(
-            Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-                '\\package.zip')
+    final bytes = File(Platform.resolvedExecutable.split("updater.exe")[0] +
+            '\\package.zip')
         .readAsBytesSync();
 
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
-
+    bool updateUpdater = false;
     // Extract the contents of the Zip archive to disk.
     for (final file in archive) {
       final filename = file.name;
       if (file.isFile) {
-        final data = file.content as List<int>;
-        File(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-            '/' +
-            filename)
-          ..createSync(recursive: true)
-          ..writeAsBytesSync(data);
+        if (filename == "updater.exe") {
+          updateUpdater = true;
+        } else {
+          final data = file.content as List<int>;
+          File(Platform.resolvedExecutable.split("updater.exe")[0] +
+              '/' +
+              filename)
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(data);
+        }
       } else {
-        Directory(Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
+        Directory(Platform.resolvedExecutable.split("updater.exe")[0] +
                 '/' +
                 filename)
             .create(recursive: true);
       }
     }
-    File package = File(
-        Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-            '/package.zip');
-    package.deleteSync();
+    if (!updateUpdater) {
+      File(Platform.resolvedExecutable.split("updater.exe")[0] + '/package.zip')
+          .deleteSync();
+    }
     // Use this when compiling production build
-    File removeLog = File(
-        Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-            '/removelog.json');
+    File removeLog = File(Platform.resolvedExecutable.split("updater.exe")[0] +
+        '/removelog.json');
     if (removeLog.existsSync()) {
       for (String item in json.decode(removeLog.readAsStringSync())) {
         File file = File(
-            Platform.resolvedExecutable.split("spideyupdate.exe")[0] +
-                '/$item');
+            Platform.resolvedExecutable.split("updater.exe")[0] + '/$item');
         if (file.existsSync()) {
           file.deleteSync();
         }
       }
       removeLog.deleteSync();
+    }
+    await File(Platform.resolvedExecutable.split("updater.exe")[0] +
+            '/version.txt')
+        .writeAsString(latestVersion);
+    if (updateUpdater) {
+      Process.start(
+          Platform.resolvedExecutable.split("updater.exe")[0] + "updater2.exe",
+          [],
+          runInShell: true,
+          mode: ProcessStartMode.detached);
     }
     print("update was successfull");
   });

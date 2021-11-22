@@ -1,15 +1,14 @@
-import 'package:archive/archive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 
-void main(List<String> args) {
+void main(List<String> args) async {
   // Use this for development test
-  String currentVersion = File("version.txt").readAsLinesSync()[0];
+  // String currentVersion = File("version.txt").readAsLinesSync()[0]
 
   // Use this for production build
-  // String currentVersion =
-  //     File(Platform.resolvedExecutable.split("spidey.exe")[0] + '/version.txt')
-  //         .readAsLinesSync()[0];
+  String currentVersion =
+      File(Platform.resolvedExecutable.split("spidey.exe")[0] + '/version.txt')
+          .readAsLinesSync()[0];
   http
       .get(Uri.https("raw.githubusercontent.com",
           "/glappy-py/SpideyCLI-BUILD-/main/version.txt"))
@@ -25,6 +24,12 @@ void main(List<String> args) {
       help();
     } else if (args[0] == "-v") {
       print(currentVersion);
+    } else if (args[0] == "update") {
+      Process.start(
+          Platform.resolvedExecutable.split("spidey.exe")[0] + "updater.exe",
+          [],
+          runInShell: true,
+          mode: ProcessStartMode.detached);
     } else if (args[0] == "logo") {
       print("""
 
@@ -69,7 +74,7 @@ void help() {
   
   spidey help  -  display this help panel
 
-  spideyupdate  -  update SpideyCLI. NOTE : there's no space between spidey and update (it's 'spideyupdate')
+  spidey update  -  update SpideyCLI. NOTE : there's no space between spidey and update (it's 'spideyupdate')
 
   spidey logo  -  display the spidey logo. That's it
 
